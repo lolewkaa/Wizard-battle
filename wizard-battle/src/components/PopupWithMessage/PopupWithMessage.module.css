@@ -1,0 +1,16 @@
+.popup {
+  width: 350px;
+  height: 350px;
+  background-color: red;
+  display: none;
+}
+
+.popup__close {
+ width: 50px;
+ height: 50px;
+ background-color: blue;
+}
+
+.popup_open {
+  display: block;
+}
