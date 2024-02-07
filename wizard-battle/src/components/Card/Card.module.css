@@ -1,0 +1,17 @@
+.card {
+width: 200px;
+height: 300px;
+border: 1px solid black;
+}
+
+.card__name {
+
+}
+
+.card__health {
+
+}
+
+.card__mana {
+
+}

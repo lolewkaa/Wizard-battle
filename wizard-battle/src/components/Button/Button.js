@@ -1,17 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './Button.module.css';
 
-export default function Button({ openPopupWithMessage }) {
-  const [isDisable, setIsDisable] = useState('нажми меня');
-
-  const handleChange = (e) => {
-    e.preventDefault();
-    setIsDisable('меня нажали');
-  };
+export default function Button({ text, clickButton }) {
   return (
     <>
-    <button className={styles.button} onClick={handleChange}>{isDisable}</button>
-    <button className={styles.button} onClick={openPopupWithMessage}></button>
+    <button onClick={clickButton} className={styles.button}>{text}</button>
     </>
   );
 }

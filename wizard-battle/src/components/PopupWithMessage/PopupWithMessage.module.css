@@ -2,7 +2,10 @@
   width: 350px;
   height: 350px;
   background-color: red;
-  display: none;
+  z-index: 100;
+  position: fixed;
+  margin: 200px 0;
+
 }
 
 .popup__close {
@@ -11,6 +14,16 @@
  background-color: blue;
 }
 
-.popup_open {
-  display: block;
+.popup__title {
+  font-size: 24px;
 }
+
+.popup__overlay {
+  background-color: rgb(0, 0, 0, 0.80);
+  width: 1280px;
+  height: 1280px;
+  z-index: 1;
+  top: 0;
+  position: absolute;
+}
+
