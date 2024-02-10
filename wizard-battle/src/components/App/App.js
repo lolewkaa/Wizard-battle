@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import '../../App.css';
-import Button from '../Button/Button';
 import PopupWithMessage from '../PopupWithMessage/PopupWithMessage';
 import SelectionButtons from '../SelectionButtons/SelectionButtons';
 import SelectionOpponents from '../SelectionOpponents/SelectionOpponents';
@@ -18,42 +17,21 @@ function App() {
 
   const navigate = useNavigate();
 
-  // function openPopup() {
-  //   setIsOpenPopup(true);
-  // }
-
-  function closePopup() {
-    setIsOpenPopup(false);
-  }
-
   function clickButton() {
     setIsBisable(true);
     setIsOpenPopup(true);
-  }
-
-  function selectAuto() {
-    setIsAutoSelect(true);
-    navigate('/opponents');
-  }
-
-  function selectYourself() {
-    navigate('/opponents');
-  }
-
-  function findFighter() {
-    setIsBlockButtonFind(true);
   }
 
   return (
     <>
     <Header />
       <Routes>
-        <Route path='/' element={<SelectionButtons selectAuto={selectAuto} selectYourself={selectYourself} clickButton={clickButton} />} />
-        <Route path='/opponents' element={<SelectionOpponents isBlockButtonFind={isBlockButtonFind} findFighter={findFighter} isAutoSelect={isAutoSelect}/>} />
+        <Route path='/' element={<SelectionButtons setIsAutoSelect={setIsAutoSelect} clickButton={clickButton} />} />
+        <Route path='/opponents' element={<SelectionOpponents setIsBlockButtonFind={setIsBlockButtonFind} isBlockButtonFind={isBlockButtonFind} isAutoSelect={isAutoSelect}/>} />
         <Route path='/battle' element={<Battle />} />
         <Route path='/feedback' element={<Feedback />} />
       </Routes>
-      {isOpenPopup && <PopupWithMessage text='текст' onClose={closePopup}></PopupWithMessage>}
+      {isOpenPopup && <PopupWithMessage setIsOpenPopup={setIsOpenPopup} text='текст'></PopupWithMessage>}
       <Footer />
     </>
   );

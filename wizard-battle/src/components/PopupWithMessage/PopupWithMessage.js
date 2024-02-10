@@ -1,7 +1,10 @@
 import React from 'react';
 import styles from './PopupWithMessage.module.css';
 
-export default function PopupWithMessage({ onClose, text, children }) {
+export default function PopupWithMessage({ setIsOpenPopup, text, children }) {
+  function onClose() {
+    setIsOpenPopup(false);
+  }
   return (
     <>
     <div onClick={onClose} className={styles.popup__overlay}></div>
