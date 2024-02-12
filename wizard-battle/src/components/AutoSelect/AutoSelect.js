@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect } from 'react';
 import styles from './AutoSelect.module.css';
 import Card from '../Card/Card';
 
@@ -28,18 +29,24 @@ export default function AutoSelect({ setIsBlockButtonFind, isBlockButtonFind }) 
       status: 'active',
     },
   ];
+
   function getRandomCard(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
   }
 
+  const wizcard = getRandomCard(wizzards);
+
   function findFighter() {
     setIsBlockButtonFind(true);
-    console.log(getRandomCard(wizzards));
+    setTimeout(getRandomCard, 3000, wizzards);
+    // getRandomCard(wizzards);
   }
+  // const wizzardCards = wizzards.map((wiz) => <Card key={wiz.name} name={wiz.name} />);
   return (
           <>
             <div className={styles.auto}>
-              <Card />
+              {/* {wizzardCards} */}
+               <Card name={wizcard.name}/>
               <div className={styles.auto__container}>
                 <button
                 className={styles.auto__button}
@@ -53,7 +60,7 @@ export default function AutoSelect({ setIsBlockButtonFind, isBlockButtonFind }) 
                 disabled={isBlockButtonFind && true}
                 >К бою!</button>
               </div>
-              <Card />
+              <Card name={wizcard.name} />
             </div>
           </>
   );
