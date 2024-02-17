@@ -1,0 +1,14 @@
+.opponents {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.opponents__container {
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: blue;
+}
