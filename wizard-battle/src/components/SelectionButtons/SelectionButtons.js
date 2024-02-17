@@ -24,8 +24,6 @@ export default function SelectionButtons({ setIsAutoSelect, setIsOpenPopup }) {
       <>
       <section className={styles.selection}>
      <div className={styles.selection__container}>
-       {/* <Button onClick={selectYourself} text='вручную' />
-       <Button onClick={selectAuto} text='автоматически' /> */}
        <Button clickButton={manualSelection} text='вручную'/>
        <Button clickButton={autoSelection} text='автоматически'/>
      </div>
