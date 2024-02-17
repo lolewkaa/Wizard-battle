@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './SelectionButtons.module.css';
 import Button from '../Button/Button';
 
-export default function SelectionButtons({ setIsAutoSelect, clickButton }) {
+export default function SelectionButtons({ setIsAutoSelect, setIsOpenPopup }) {
   const navigate = useNavigate();
+  const [isDisable, setIsBisable] = useState(false);
 
   function autoSelection() {
     setIsAutoSelect(true);
-    navigate('/opponents');
+    navigate('/auto-selection');
   }
 
   function manualSelection() {
-    navigate('/opponents');
+    navigate('/manual-selection');
+  }
+
+  function openPopup() {
+    setIsBisable(true);
+    setIsOpenPopup(true);
   }
   return (
       <>
@@ -20,10 +26,10 @@ export default function SelectionButtons({ setIsAutoSelect, clickButton }) {
      <div className={styles.selection__container}>
        {/* <Button onClick={selectYourself} text='вручную' />
        <Button onClick={selectAuto} text='автоматически' /> */}
-       <button className={styles.selection__button} onClick={manualSelection}>вручную</button>
-       <button className={styles.selection__button} onClick={autoSelection}>автоматически</button>
+       <Button clickButton={manualSelection} text='вручную'/>
+       <Button clickButton={autoSelection} text='автоматически'/>
      </div>
-     <Button clickButton={clickButton} text='тестик попапа'/>
+     <Button clickButton={openPopup} text='тестик попапа'/>
      </section>
       </>
   );

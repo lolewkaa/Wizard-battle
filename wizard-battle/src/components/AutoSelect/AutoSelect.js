@@ -1,67 +1,75 @@
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './AutoSelect.module.css';
 import Card from '../Card/Card';
 
-export default function AutoSelect({ setIsBlockButtonFind, isBlockButtonFind }) {
-  const wizzards = [
-    {
-      name: 'Harry',
-      lastName: 'Potter',
-      healthPoints: 100,
-      manaPoints: 100,
-      status: 'active',
-    },
+const wizzards = [
+  {
+    name: 'Harry',
+    lastName: 'Potter',
+    healthPoints: 100,
+    manaPoints: 100,
+    status: 'active',
+  },
 
-    {
-      name: 'Sirius',
-      lastName: 'Snake',
-      healthPoints: 100,
-      manaPoints: 1000,
-      status: 'active',
-    },
+  {
+    name: 'Sirius',
+    lastName: 'Snake',
+    healthPoints: 100,
+    manaPoints: 1000,
+    status: 'active',
+  },
 
-    {
-      name: 'Hermiona',
-      lastName: 'Granger',
-      healthPoints: 100,
-      manaPoints: 1000,
-      status: 'active',
-    },
-  ];
+  {
+    name: 'Hermiona',
+    lastName: 'Granger',
+    healthPoints: 100,
+    manaPoints: 1000,
+    status: 'active',
+  },
+];
 
-  function getRandomCard(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-  }
+function getRandomWizzard(arr) {
+  const randomNum = Math.random() * arr.length;
+  const randomIndex = Math.floor(randomNum);
+  return arr[randomIndex];
+}
 
-  const wizcard = getRandomCard(wizzards);
+export default function AutoSelect() {
+  const [isDisableButton, setIsDisableButton] = useState(false);
+  const [wizzardsData, setWizzardsData] = useState(wizzards);
+  const [firstOpponent, setFirstOpponent] = useState(null);
+  const [secondOpponent, setSecondOpponent] = useState(null);
 
-  function findFighter() {
-    setIsBlockButtonFind(true);
-    setTimeout(getRandomCard, 3000, wizzards);
-    // getRandomCard(wizzards);
-  }
-  // const wizzardCards = wizzards.map((wiz) => <Card key={wiz.name} name={wiz.name} />);
+  useEffect(() => {
+    setFirstOpponent(getRandomWizzard(wizzardsData));
+    setSecondOpponent(getRandomWizzard(wizzardsData));
+  }, []);
+
+  const handleFindFighters = () => {
+    setIsDisableButton(true);
+    setTimeout(() => {
+      setFirstOpponent(getRandomWizzard(wizzardsData));
+      setSecondOpponent(getRandomWizzard(wizzardsData));
+      setIsDisableButton(false);
+    }, 3000);
+  };
   return (
-          <>
-            <div className={styles.auto}>
-              {/* {wizzardCards} */}
-               <Card name={wizcard.name}/>
-              <div className={styles.auto__container}>
-                <button
-                className={styles.auto__button}
-                onClick={findFighter}
-                disabled={isBlockButtonFind && true}
-                >
-                  Найти
-                </button>
-                <button
-                className={styles.auto__button}
-                disabled={isBlockButtonFind && true}
-                >К бою!</button>
-              </div>
-              <Card name={wizcard.name} />
-            </div>
-          </>
+    <div className={styles.auto}>
+        <Card name={firstOpponent?.name}/>
+      <div className={styles.auto__container}>
+        <button
+        className={styles.auto__button}
+        onClick={handleFindFighters}
+        disabled={isDisableButton}
+        >
+          Найти
+        </button>
+        <button
+        className={styles.auto__button}
+        disabled={isDisableButton}
+        >К бою!</button>
+      </div>
+      <Card name={secondOpponent?.name} />
+    </div>
   );
 }

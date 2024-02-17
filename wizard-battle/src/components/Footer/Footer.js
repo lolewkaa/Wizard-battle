@@ -5,7 +5,7 @@ export default function Footer() {
   return (
           <>
           <section className={styles.footer}>
-          <h1>footer</h1>
+            <h1>footer</h1>
           </section>
           </>
   );
