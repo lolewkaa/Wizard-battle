@@ -3,9 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import styles from './SelectionButtons.module.css';
 import Button from '../Button/Button';
 
-export default function SelectionButtons({ setIsAutoSelect, setIsOpenPopup }) {
+export default function SelectionButtons({ setIsAutoSelect }) {
   const navigate = useNavigate();
-  const [isDisable, setIsBisable] = useState(false);
 
   function autoSelection() {
     setIsAutoSelect(true);
@@ -16,10 +15,6 @@ export default function SelectionButtons({ setIsAutoSelect, setIsOpenPopup }) {
     navigate('/manual-selection');
   }
 
-  function openPopup() {
-    setIsBisable(true);
-    setIsOpenPopup(true);
-  }
   return (
       <>
       <section className={styles.selection}>
@@ -27,7 +22,6 @@ export default function SelectionButtons({ setIsAutoSelect, setIsOpenPopup }) {
        <Button clickButton={manualSelection} text='вручную'/>
        <Button clickButton={autoSelection} text='автоматически'/>
      </div>
-     <Button clickButton={openPopup} text='тестик попапа'/>
      </section>
       </>
   );

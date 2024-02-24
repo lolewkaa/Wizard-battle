@@ -22,8 +22,8 @@ function App() {
     <Header />
       <Routes>
         <Route path='/' element={<SelectionButtons setIsOpenPopup={setIsOpenPopup} setIsAutoSelect={setIsAutoSelect} />} />
-        <Route path='/auto-selection' element={<AutoSelect setIsBlockButtonFind={setIsBlockButtonFind} />} />
-        <Route path='/manual-selection' element={<IndependentSelect />} />
+        <Route path='/auto-selection' element={<AutoSelect setIsOpenPopup={setIsOpenPopup} setIsBlockButtonFind={setIsBlockButtonFind} />} />
+        <Route path='/manual-selection' element={<IndependentSelect setIsOpenPopup={setIsOpenPopup}/>} />
         <Route path='/battle' element={<Battle />} />
         <Route path='/feedback' element={<Feedback />} />
       </Routes>

@@ -26,6 +26,38 @@ const wizzards = [
     manaPoints: 1000,
     status: 'active',
   },
+
+  {
+    name: 'fff',
+    lastName: 'Granger',
+    healthPoints: 100,
+    manaPoints: 1000,
+    status: 'active',
+  },
+
+  {
+    name: 'qqqqqq',
+    lastName: 'Granger',
+    healthPoints: 100,
+    manaPoints: 1000,
+    status: 'active',
+  },
+  {
+    name: 'zzzzzz',
+    lastName: 'Granger',
+    healthPoints: 100,
+    manaPoints: 1000,
+    status: 'active',
+  },
+
+  {
+    name: 'hello',
+    lastName: 'Granger',
+    healthPoints: 100,
+    manaPoints: 1000,
+    status: 'active',
+  },
+
 ];
 
 function getRandomWizzard(arr) {
@@ -34,10 +66,10 @@ function getRandomWizzard(arr) {
   return arr[randomIndex];
 }
 
-export default function AutoSelect() {
+export default function AutoSelect({ setIsOpenPopup }) {
   const [isDisableButton, setIsDisableButton] = useState(false);
   const [wizzardsData, setWizzardsData] = useState(wizzards);
-  const [firstOpponent, setFirstOpponent] = useState(null);
+  const [firstOpponent, setFirstOpponent] = useState(JSON.parse(localStorage.getItem('firstOpponent')) || null);
   const [secondOpponent, setSecondOpponent] = useState(null);
 
   useEffect(() => {
@@ -53,6 +85,14 @@ export default function AutoSelect() {
       setIsDisableButton(false);
     }, 3000);
   };
+
+  useEffect(() => {
+    localStorage.setItem('firstOpponent', JSON.stringify(firstOpponent));
+  }, [firstOpponent]);
+
+  function openPopup() {
+    setIsOpenPopup(true);
+  }
   return (
     <div className={styles.auto}>
         <Card name={firstOpponent?.name}/>
@@ -67,6 +107,7 @@ export default function AutoSelect() {
         <button
         className={styles.auto__button}
         disabled={isDisableButton}
+        onClick={openPopup}
         >К бою!</button>
       </div>
       <Card name={secondOpponent?.name} />

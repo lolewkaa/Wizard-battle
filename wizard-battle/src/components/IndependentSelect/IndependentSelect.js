@@ -28,12 +28,15 @@ const wizzards = [
   },
 ];
 
-export default function IndependentSelect() {
+export default function IndependentSelect({ setIsOpenPopup }) {
   const [isDisableButton, setIsDisableButton] = useState(false);
   // const [selectFirstOpponent, setSelectFirstOpponent] = useState(false);
   // const [selectSecondOpponent, setSelectSecondOpponent] = useState(false);
   const [colorPlace, setColorPlace] = useState(false);
   const [selectOpponent, setSelectOpponent] = useState(false);
+  function openPopup() {
+    setIsOpenPopup(true);
+  }
   const toggleSelectionOpponent = () => {
     setSelectOpponent(!selectOpponent);
     setColorPlace(!colorPlace);
@@ -49,7 +52,11 @@ export default function IndependentSelect() {
               <div className={styles.manual__container}>
                 {wizzardCards}
               </div>
-              <button disabled={isDisableButton} className={styles.manual__button}>В бой</button>
+              <button
+              onClick={openPopup}
+              disabled={isDisableButton}
+              className={styles.manual__button
+              }>В бой</button>
             </section>
           </>
   );
