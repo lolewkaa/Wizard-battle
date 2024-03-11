@@ -33,23 +33,27 @@ const wizzards = [
 
 export default function IndependentSelect({ setIsOpenPopup }) {
   const [isDisableButton, setIsDisableButton] = useState(false);
-  const [colorPlace, setColorPlace] = useState(false);
   const [firstOpponentId, setFirstOpponentId] = useState(JSON.parse(localStorage.getItem('firstOpponentId')) || '');
   const [secondOpponentId, setSecondOpponentId] = useState(JSON.parse(localStorage.getItem('secondOpponentId')) || '');
-  // const [firstOpponentId, setFirstOpponentId] = useState('')
-  // const [secondOpponentId, setSecondOpponentId] = useState('')
 
   function openPopup() {
     setIsOpenPopup(true);
   }
-  const toggleSelectionOpponent = (wizardId) => {
-    setFirstOpponentId(wizardId);
-    setSecondOpponentId(wizardId);
-    //это проверка
-    if (secondOpponentId !== '') {
-      console.log('выбрали второго')
+  const toggleSelectionOpponent = (wizardId, opponent) => {
+    if (opponent === 'firstOpponentId') {
+      if (firstOpponentId === wizardId) {
+        setFirstOpponentId('');
+      } else {
+        setFirstOpponentId(wizardId);
+      }
     }
-    setColorPlace(!colorPlace);
+    if (opponent === 'secondOpponentId') {
+      if (secondOpponentId === wizardId) {
+        setSecondOpponentId('');
+      } else {
+        setSecondOpponentId(wizardId);
+      }
+    }
   };
 
   useEffect(() => {
@@ -70,17 +74,25 @@ export default function IndependentSelect({ setIsOpenPopup }) {
               {wizzards.map((wizzard) => (
                   <Card
                     colorPlace={wizzard.id === firstOpponentId}
-                    toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id)}
+                    toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'firstOpponentId')}
                     key={wizzard.name}
                     name={wizzard.name}
-                  />),
-              )}
+                  />))}
               </div>
               <button
               onClick={openPopup}
               disabled={isDisableButton}
               className={styles.manual__button
               }>В бой</button>
+              <div className={styles.manual__container}>
+              {wizzards.map((wizzard) => (
+                  <Card
+                    colorPlace={wizzard.id === secondOpponentId}
+                    toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'secondOpponentId')}
+                    key={wizzard.name}
+                    name={wizzard.name}
+                  />))}
+              </div>
             </section>
           </>
   );
