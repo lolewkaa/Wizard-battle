@@ -4,8 +4,6 @@ import inactiveStar from '../../images/star-point_icon-icons.com_68483.svg';
 import activeStart from '../../images/star_77949.svg';
 
 export default function Feedback() {
-  const [email, setEmail] = useState(JSON.parse(localStorage.getItem('email')) || '');
-  const [name, setName] = useState(JSON.parse(localStorage.getItem('name')) || '');
   const [emailDirty, setEmailDirty] = useState(JSON.parse(localStorage.getItem('emailDirty')) || false);
   const [nameDirty, setNameDirty] = useState(JSON.parse(localStorage.getItem('nameDirty')) || false);
   const [emailError, setEmailError] = useState(JSON.parse(localStorage.getItem('emailError')) || 'Это обязательное поле');
