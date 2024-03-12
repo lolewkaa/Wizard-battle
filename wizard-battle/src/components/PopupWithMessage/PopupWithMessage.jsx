@@ -14,7 +14,7 @@ export default function PopupWithMessage({ setIsOpenPopup, children }) {
     const runTimer = () => {
       if (seconds === 0) {
         setIsOpenPopup(false);
-        navigate('/');
+        navigate('/battle');
         return;
       }
       setTimeout(

@@ -57,11 +57,11 @@ export default function IndependentSelect({ setIsOpenPopup }) {
   };
 
   useEffect(() => {
-    localStorage.setItem('firstOpponent', JSON.stringify(firstOpponentId));
+    localStorage.setItem('firstOpponentId', JSON.stringify(firstOpponentId));
   }, [firstOpponentId]);
 
   useEffect(() => {
-    localStorage.setItem('secondOpponent', JSON.stringify(secondOpponentId));
+    localStorage.setItem('secondOpponentId', JSON.stringify(secondOpponentId));
   }, [secondOpponentId]);
 
   useEffect(() => {

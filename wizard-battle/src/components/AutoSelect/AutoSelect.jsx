@@ -95,7 +95,6 @@ export default function AutoSelect({ setIsOpenPopup }) {
   useEffect(() => {
     localStorage.setItem('secondOpponent', JSON.stringify(secondOpponent));
   }, [secondOpponent]);
-
   function openPopup() {
     setIsOpenPopup(true);
   }
