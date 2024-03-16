@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import styles from './AutoSelect.module.css';
 import Card from '../Card/Card.jsx';
+
+const baseUrl = 'https://wizard-world-api.herokuapp.com/Wizards';
 
 const wizzards = [
   {
@@ -68,12 +71,17 @@ function getRandomWizzard(arr) {
 
 export default function AutoSelect({ setIsOpenPopup }) {
   const [isDisableButton, setIsDisableButton] = useState(false);
-  const [wizzardsData, setWizzardsData] = useState(wizzards);
-  const [firstOpponent, setFirstOpponent] = useState(JSON.parse(localStorage.getItem('firstOpponent')) || null);
-  const [secondOpponent, setSecondOpponent] = useState(JSON.parse(localStorage.getItem('secondOpponent')) || null);
+  // const [wizzardsData, setWizzardsData] = useState(wizzards);
+  const [wizzardsData, setWizzardsData] = useState([]);
+  const [firstOpponent, setFirstOpponent] = useState(JSON.parse(localStorage.getItem('firstOpponentId')) || null);
+  const [secondOpponent, setSecondOpponent] = useState(JSON.parse(localStorage.getItem('secondOpponentId')) || null);
+
+  axios.get(baseUrl).then((res) => {
+    setWizzardsData(res.data);
+  });
 
   useEffect(() => {
-    if (localStorage.getItem('firstOpponent') === null && localStorage.getItem('secondOpponent') === null) {
+    if (localStorage.getItem('firstOpponentId') === null && localStorage.getItem('secondOpponentId') === null) {
       setFirstOpponent(getRandomWizzard(wizzardsData));
       setSecondOpponent(getRandomWizzard(wizzardsData));
     }
@@ -89,18 +97,18 @@ export default function AutoSelect({ setIsOpenPopup }) {
   };
 
   useEffect(() => {
-    localStorage.setItem('firstOpponent', JSON.stringify(firstOpponent));
+    localStorage.setItem('firstOpponentId', JSON.stringify(firstOpponent));
   }, [firstOpponent]);
 
   useEffect(() => {
-    localStorage.setItem('secondOpponent', JSON.stringify(secondOpponent));
+    localStorage.setItem('secondOpponentId', JSON.stringify(secondOpponent));
   }, [secondOpponent]);
   function openPopup() {
     setIsOpenPopup(true);
   }
   return (
     <div className={styles.auto}>
-        <Card name={firstOpponent?.name}/>
+        <Card name={firstOpponent?.firstName} lastName={firstOpponent?.lastName}/>
       <div className={styles.auto__container}>
         <button
         className={styles.auto__button}
@@ -115,7 +123,7 @@ export default function AutoSelect({ setIsOpenPopup }) {
         onClick={openPopup}
         >К бою!</button>
       </div>
-      <Card name={secondOpponent?.name} />
+      <Card name={secondOpponent?.firstName} lastName={secondOpponent?.lastName}/>
     </div>
   );
 }

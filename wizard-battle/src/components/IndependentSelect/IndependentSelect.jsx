@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import styles from './IndependentSelect.module.css';
 import Card from '../Card/Card.jsx';
+
+const baseUrl = 'https://wizard-world-api.herokuapp.com/Wizards';
 
 const wizzards = [
   {
@@ -35,23 +38,28 @@ export default function IndependentSelect({ setIsOpenPopup }) {
   const [isDisableButton, setIsDisableButton] = useState(false);
   const [firstOpponentId, setFirstOpponentId] = useState(JSON.parse(localStorage.getItem('firstOpponentId')) || '');
   const [secondOpponentId, setSecondOpponentId] = useState(JSON.parse(localStorage.getItem('secondOpponentId')) || '');
+  const [wizzardsData, setWizzardsData] = useState([]);
+
+  axios.get(baseUrl).then((res) => {
+    setWizzardsData(res.data);
+  });
 
   function openPopup() {
     setIsOpenPopup(true);
   }
-  const toggleSelectionOpponent = (wizardId, opponent) => {
+  const toggleSelectionOpponent = (id, opponent, firstName, lastName) => {
     if (opponent === 'firstOpponentId') {
-      if (firstOpponentId === wizardId) {
+      if (firstOpponentId === id) {
         setFirstOpponentId('');
       } else {
-        setFirstOpponentId(wizardId);
+        setFirstOpponentId({ id, firstName, lastName });
       }
     }
     if (opponent === 'secondOpponentId') {
-      if (secondOpponentId === wizardId) {
+      if (secondOpponentId === id) {
         setSecondOpponentId('');
       } else {
-        setSecondOpponentId(wizardId);
+        setSecondOpponentId({ id, firstName, lastName });
       }
     }
   };
@@ -71,12 +79,13 @@ export default function IndependentSelect({ setIsOpenPopup }) {
           <>
             <section className={styles.manual}>
               <div className={styles.manual__container}>
-              {wizzards.map((wizzard) => (
+              {wizzardsData.map((wizzard) => (
                   <Card
                     colorPlace={wizzard.id === firstOpponentId}
-                    toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'firstOpponentId')}
-                    key={wizzard.name}
-                    name={wizzard.name}
+                    toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'firstOpponentId', wizzard.firstName, wizzard.lastName)}
+                    key={wizzard.id}
+                    name={wizzard.firstName}
+                    lastName={wizzard.lastName}
                   />))}
               </div>
               <button
@@ -85,12 +94,13 @@ export default function IndependentSelect({ setIsOpenPopup }) {
               className={styles.manual__button
               }>В бой</button>
               <div className={styles.manual__container}>
-              {wizzards.map((wizzard) => (
+              {wizzardsData.map((wizzard) => (
                   <Card
                     colorPlace={wizzard.id === secondOpponentId}
-                    toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'secondOpponentId')}
-                    key={wizzard.name}
-                    name={wizzard.name}
+                    toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'secondOpponentId', wizzard.firstName, wizzard.lastName)}
+                    key={wizzard.id}
+                    name={wizzard.firstName}
+                    lastName={wizzard.lastName}
                   />))}
               </div>
             </section>

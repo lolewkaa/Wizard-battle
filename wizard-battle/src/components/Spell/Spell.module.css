@@ -1,0 +1,12 @@
+.spell {
+    width: 150px;
+    height: 38px;
+    border: 1px solid black;
+    margin: 0;
+}
+
+.spell__name {
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+}
