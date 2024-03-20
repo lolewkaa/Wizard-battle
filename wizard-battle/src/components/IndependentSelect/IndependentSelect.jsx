@@ -47,17 +47,23 @@ export default function IndependentSelect({ setIsOpenPopup }) {
   function openPopup() {
     setIsOpenPopup(true);
   }
+
+  const defoltOpponentData = {
+    id: '',
+    firstName: '',
+    lastName: '',
+  }
   const toggleSelectionOpponent = (id, opponent, firstName, lastName) => {
     if (opponent === 'firstOpponentId') {
-      if (firstOpponentId === id) {
-        setFirstOpponentId('');
+      if (firstOpponentId.id === id) {
+        setFirstOpponentId(defoltOpponentData);
       } else {
         setFirstOpponentId({ id, firstName, lastName });
       }
     }
     if (opponent === 'secondOpponentId') {
-      if (secondOpponentId === id) {
-        setSecondOpponentId('');
+      if (secondOpponentId.id === id) {
+        setSecondOpponentId(defoltOpponentData);
       } else {
         setSecondOpponentId({ id, firstName, lastName });
       }
@@ -81,7 +87,7 @@ export default function IndependentSelect({ setIsOpenPopup }) {
               <div className={styles.manual__container}>
               {wizzardsData.map((wizzard) => (
                   <Card
-                    colorPlace={wizzard.id === firstOpponentId}
+                    colorPlace={wizzard.id === firstOpponentId.id}
                     toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'firstOpponentId', wizzard.firstName, wizzard.lastName)}
                     key={wizzard.id}
                     name={wizzard.firstName}
@@ -96,7 +102,7 @@ export default function IndependentSelect({ setIsOpenPopup }) {
               <div className={styles.manual__container}>
               {wizzardsData.map((wizzard) => (
                   <Card
-                    colorPlace={wizzard.id === secondOpponentId}
+                    colorPlace={wizzard.id === secondOpponentId.id}
                     toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'secondOpponentId', wizzard.firstName, wizzard.lastName)}
                     key={wizzard.id}
                     name={wizzard.firstName}
