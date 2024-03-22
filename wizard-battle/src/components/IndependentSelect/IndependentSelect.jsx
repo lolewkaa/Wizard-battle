@@ -2,70 +2,38 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './IndependentSelect.module.css';
 import Card from '../Card/Card.jsx';
+import PopupWithMessage from '../PopupWithMessage/PopupWithMessage.jsx';
 
 const baseUrl = 'https://wizard-world-api.herokuapp.com/Wizards';
 
-const wizzards = [
-  {
-    id: '0',
-    name: 'Harry',
-    lastName: 'Potter',
-    healthPoints: 100,
-    manaPoints: 100,
-    status: 'active',
-  },
-
-  {
-    id: '1',
-    name: 'Sirius',
-    lastName: 'Snake',
-    healthPoints: 100,
-    manaPoints: 1000,
-    status: 'active',
-  },
-
-  {
-    id: '2',
-    name: 'Hermiona',
-    lastName: 'Granger',
-    healthPoints: 100,
-    manaPoints: 1000,
-    status: 'active',
-  },
-];
-
-export default function IndependentSelect({ setIsOpenPopup }) {
+export default function IndependentSelect({ setIsOpenPopup, isOpenPopup }) {
   const [isDisableButton, setIsDisableButton] = useState(false);
   const [firstOpponentId, setFirstOpponentId] = useState(JSON.parse(localStorage.getItem('firstOpponentId')) || '');
   const [secondOpponentId, setSecondOpponentId] = useState(JSON.parse(localStorage.getItem('secondOpponentId')) || '');
   const [wizzardsData, setWizzardsData] = useState([]);
 
-  axios.get(baseUrl).then((res) => {
-    setWizzardsData(res.data);
-  });
-
+  useEffect(() => {
+    axios.get(baseUrl).then((res) => {
+      setWizzardsData(res.data);
+    });
+  }, []);
   function openPopup() {
     setIsOpenPopup(true);
   }
 
-  const defoltOpponentData = {
-    id: '',
-    firstName: '',
-    lastName: '',
-  }
-  const toggleSelectionOpponent = (id, opponent, firstName, lastName) => {
+  const toggleSelectionOpponent = (id, opponent) => {
     if (opponent === 'firstOpponentId') {
-      if (firstOpponentId.id === id) {
-        setFirstOpponentId(defoltOpponentData);
+      if (firstOpponentId === id) {
+        setFirstOpponentId('');
       } else {
-        setFirstOpponentId({ id, firstName, lastName });
+        setFirstOpponentId(id);
       }
     }
     if (opponent === 'secondOpponentId') {
-      if (secondOpponentId.id === id) {
-        setSecondOpponentId(defoltOpponentData);
+      if (secondOpponentId === id) {
+        setSecondOpponentId('');
       } else {
-        setSecondOpponentId({ id, firstName, lastName });
+        setSecondOpponentId(id);
       }
     }
   };
@@ -87,8 +55,8 @@ export default function IndependentSelect({ setIsOpenPopup }) {
               <div className={styles.manual__container}>
               {wizzardsData.map((wizzard) => (
                   <Card
-                    colorPlace={wizzard.id === firstOpponentId.id}
-                    toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'firstOpponentId', wizzard.firstName, wizzard.lastName)}
+                    colorPlace={wizzard.id === firstOpponentId}
+                    toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'firstOpponentId')}
                     key={wizzard.id}
                     name={wizzard.firstName}
                     lastName={wizzard.lastName}
@@ -102,14 +70,15 @@ export default function IndependentSelect({ setIsOpenPopup }) {
               <div className={styles.manual__container}>
               {wizzardsData.map((wizzard) => (
                   <Card
-                    colorPlace={wizzard.id === secondOpponentId.id}
-                    toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'secondOpponentId', wizzard.firstName, wizzard.lastName)}
+                    colorPlace={wizzard.id === secondOpponentId}
+                    toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'secondOpponentId')}
                     key={wizzard.id}
                     name={wizzard.firstName}
                     lastName={wizzard.lastName}
                   />))}
               </div>
             </section>
+            {isOpenPopup && <PopupWithMessage setIsOpenPopup={setIsOpenPopup} text='Перенапрявляем вас на страницу сражения'></PopupWithMessage>}
           </>
   );
 }

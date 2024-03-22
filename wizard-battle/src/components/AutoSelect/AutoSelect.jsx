@@ -5,64 +5,6 @@ import Card from '../Card/Card.jsx';
 
 const baseUrl = 'https://wizard-world-api.herokuapp.com/Wizards';
 
-const wizzards = [
-  {
-    name: 'Harry',
-    lastName: 'Potter',
-    healthPoints: 100,
-    manaPoints: 100,
-    status: 'active',
-  },
-
-  {
-    name: 'Sirius',
-    lastName: 'Snake',
-    healthPoints: 100,
-    manaPoints: 1000,
-    status: 'active',
-  },
-
-  {
-    name: 'Hermiona',
-    lastName: 'Granger',
-    healthPoints: 100,
-    manaPoints: 1000,
-    status: 'active',
-  },
-
-  {
-    name: 'fff',
-    lastName: 'Granger',
-    healthPoints: 100,
-    manaPoints: 1000,
-    status: 'active',
-  },
-
-  {
-    name: 'qqqqqq',
-    lastName: 'Granger',
-    healthPoints: 100,
-    manaPoints: 1000,
-    status: 'active',
-  },
-  {
-    name: 'zzzzzz',
-    lastName: 'Granger',
-    healthPoints: 100,
-    manaPoints: 1000,
-    status: 'active',
-  },
-
-  {
-    name: 'hello',
-    lastName: 'Granger',
-    healthPoints: 100,
-    manaPoints: 1000,
-    status: 'active',
-  },
-
-];
-
 function getRandomWizzard(arr) {
   const randomNum = Math.random() * arr.length;
   const randomIndex = Math.floor(randomNum);
@@ -76,9 +18,11 @@ export default function AutoSelect({ setIsOpenPopup }) {
   const [firstOpponent, setFirstOpponent] = useState(JSON.parse(localStorage.getItem('firstOpponentId')) || null);
   const [secondOpponent, setSecondOpponent] = useState(JSON.parse(localStorage.getItem('secondOpponentId')) || null);
 
-  axios.get(baseUrl).then((res) => {
-    setWizzardsData(res.data);
-  });
+  useEffect(() => {
+    axios.get(baseUrl).then((res) => {
+      setWizzardsData(res.data);
+    });
+  }, []);
 
   useEffect(() => {
     if (localStorage.getItem('firstOpponentId') === null && localStorage.getItem('secondOpponentId') === null) {
@@ -95,7 +39,7 @@ export default function AutoSelect({ setIsOpenPopup }) {
       setIsDisableButton(false);
     }, 3000);
   };
-
+ console.log(firstOpponent.id)
   useEffect(() => {
     localStorage.setItem('firstOpponentId', JSON.stringify(firstOpponent));
   }, [firstOpponent]);

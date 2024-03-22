@@ -23,11 +23,10 @@ function App() {
       <Routes>
         <Route path='/' element={<SelectionButtons setIsOpenPopup={setIsOpenPopup} setIsAutoSelect={setIsAutoSelect} />} />
         <Route path='/auto-selection' element={<AutoSelect setIsOpenPopup={setIsOpenPopup} setIsBlockButtonFind={setIsBlockButtonFind} />} />
-        <Route path='/manual-selection' element={<IndependentSelect setIsOpenPopup={setIsOpenPopup}/>} />
-        <Route path='/battle' element={<Battle />} />
+        <Route path='/manual-selection' element={<IndependentSelect isOpenPopup={isOpenPopup} setIsOpenPopup={setIsOpenPopup}/>} />
+        <Route path='/battle' element={<Battle isOpenPopup={isOpenPopup} setIsOpenPopup={setIsOpenPopup}/>} />
         <Route path='/feedback' element={<Feedback />} />
       </Routes>
-      {isOpenPopup && <PopupWithMessage setIsOpenPopup={setIsOpenPopup} text='текст'></PopupWithMessage>}
       <Footer />
     </>
   );

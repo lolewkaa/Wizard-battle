@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import styles from './Feedback.module.css';
@@ -8,20 +8,6 @@ import activeStart from '../../images/star_77949.svg';
 export default function Feedback() {
   const [agreeCheckboxChecked, setAgreeCheckboxChecked] = useState(false);
   const [connectionCheckboxChecked, setConnectionCheckboxChecked] = useState(false);
-  const [commentInputValue, setCommentInputValue] = useState(JSON.parse(localStorage.getItem('commentInputValue')) || '');
-
-  useEffect(() => {
-    localStorage.setItem('commentInputValue', JSON.stringify(commentInputValue));
-  }, [commentInputValue]);
-
-  function resetForm() {
-    localStorage.removeItem('commentInputValue');
-    setCommentInputValue('');
-  }
-
-  const commentHandler = (e) => {
-    setCommentInputValue(e.target.value);
-  };
 
   // звездный рейтинг
   const [currentItem, setCurrentItem] = useState();
@@ -33,6 +19,7 @@ export default function Feedback() {
   const validationsSchema = yup.object().shape({
     name: yup.string().typeError('Строка должна содержать только буквы').required('Это обязательное поле'),
     email: yup.string().email('Введите корректный E-mail').required('Это обязательное поле'),
+    comment: yup.string(),
   });
   return (
     <section className={styles.feedBack}>
@@ -40,15 +27,17 @@ export default function Feedback() {
         initialValues={{
           name: '',
           email: '',
+          comment: '',
         }}
         validateOnBlur
         onSubmit={(values) => {
-          localStorage.removeItem('commentInputValue');
-          setCommentInputValue('');
-          localStorage.removeItem('emailInput');
           values.email = '';
-          localStorage.removeItem('nameInput');
           values.name = '';
+          values.comment = '';
+          localStorage.removeItem('secondOpponent')
+          localStorage.removeItem('firstOpponent')
+          localStorage.removeItem('secondOpponentId')
+          localStorage.removeItem('firstOpponentId')
         }}
         validationSchema={validationsSchema}
         >
@@ -72,7 +61,7 @@ export default function Feedback() {
                 /**
                 *не понимаю как в values передается name
                 */
-                value={JSON.parse(localStorage.getItem('nameInput')) || values.name}
+                value={values.name}
               />
               {touched.name && errors.name && <p className={styles.feedBack__err}>{errors.name}</p>}
               <label htmlFor={'email'}>E-mail</label>
@@ -82,7 +71,7 @@ export default function Feedback() {
                 name={'email'}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={JSON.parse(localStorage.getItem('emailInput')) || values.email}
+                value={values.email}
               />
               {
                 touched.email
@@ -102,19 +91,15 @@ export default function Feedback() {
                        />
                   ))
                 }
-                <h2 className={styles.feedBack__text}>
-              Комментарий
-            </h2>
-          <input
-        id="comment-input"
-        type="text"
-        minLength="2"
-        maxLength="1000"
-        name="comment"
-        value={commentInputValue}
-        onChange={commentHandler}
-        placeholder='Оставьте свой комментарий'
-        />
+                <label htmlFor={'comment'}>Комментарий</label>
+              <input
+                className={'input'}
+                type={'comment'}
+                name={'comment'}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.comment}
+              />
           <div className={styles.feedBack__checkBoxContainer}>
             <input type="checkbox" checked={agreeCheckboxChecked} onChange={() => setAgreeCheckboxChecked(!agreeCheckboxChecked)}/>
             <h2 className={styles.feedBack__text}>
@@ -134,32 +119,6 @@ export default function Feedback() {
             </div></>
              }
                 </div>
-              }
-              {
-                useEffect(() => {
-                  if (localStorage.getItem('nameInput') !== '') {
-                    // eslint-disable-next-line no-param-reassign
-                    values.name = JSON.parse(localStorage.getItem('nameInput'));
-                  }
-                }, [])
-              }
-              {
-                useEffect(() => {
-                  localStorage.setItem('nameInput', JSON.stringify(values.name));
-                }, [values.name])
-              }
-              {
-                useEffect(() => {
-                  if (localStorage.getItem('emailInput') !== '') {
-                    // eslint-disable-next-line no-param-reassign
-                    values.email = JSON.parse(localStorage.getItem('emailInput'));
-                  }
-                }, [])
-              }
-              {
-                useEffect(() => {
-                  localStorage.setItem('emailInput', JSON.stringify(values.email));
-                }, [values.email])
               }
               <button
               disabled={!isValid && !dirty}

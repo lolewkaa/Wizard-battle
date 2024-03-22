@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './SelectionButtons.module.css';
-import Button from '../Button/Button';
+import Button from '../Button/Button.jsx';
 
 export default function SelectionButtons({ setIsAutoSelect }) {
   const navigate = useNavigate();
