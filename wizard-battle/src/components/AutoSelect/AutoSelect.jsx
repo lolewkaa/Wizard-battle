@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from './AutoSelect.module.css';
 import Card from '../Card/Card.jsx';
+import PopupWithMessage from '../PopupWithMessage/PopupWithMessage.jsx';
 
 const baseUrl = 'https://wizard-world-api.herokuapp.com/Wizards';
 
@@ -11,7 +12,7 @@ function getRandomWizzard(arr) {
   return arr[randomIndex];
 }
 
-export default function AutoSelect({ setIsOpenPopup }) {
+export default function AutoSelect({  isOpenPopup, setIsOpenPopup }) {
   const [isDisableButton, setIsDisableButton] = useState(false);
   // const [wizzardsData, setWizzardsData] = useState(wizzards);
   const [wizzardsData, setWizzardsData] = useState([]);
@@ -39,7 +40,7 @@ export default function AutoSelect({ setIsOpenPopup }) {
       setIsDisableButton(false);
     }, 3000);
   };
- console.log(firstOpponent.id)
+
   useEffect(() => {
     localStorage.setItem('firstOpponentId', JSON.stringify(firstOpponent));
   }, [firstOpponent]);
@@ -68,6 +69,7 @@ export default function AutoSelect({ setIsOpenPopup }) {
         >К бою!</button>
       </div>
       <Card name={secondOpponent?.firstName} lastName={secondOpponent?.lastName}/>
+      {isOpenPopup && <PopupWithMessage setIsOpenPopup={setIsOpenPopup} text='Перенапрявляем вас на страницу сражения'></PopupWithMessage>}
     </div>
   );
 }
