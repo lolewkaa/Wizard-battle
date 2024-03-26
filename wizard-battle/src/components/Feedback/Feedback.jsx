@@ -6,6 +6,7 @@ import inactiveStar from '../../images/star-point_icon-icons.com_68483.svg';
 import activeStart from '../../images/star_77949.svg';
 
 export default function Feedback() {
+  
   const [agreeCheckboxChecked, setAgreeCheckboxChecked] = useState(false);
   const [connectionCheckboxChecked, setConnectionCheckboxChecked] = useState(false);
 
