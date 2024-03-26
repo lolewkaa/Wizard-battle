@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './PopupWithMessage.module.css';
 
-export default function PopupWithMessage({ setIsOpenPopup, children }) {
+export default function PopupWithMessage({ setIsOpenPopup, children, text }) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const locationSelect = location.pathname === '/manual-selection' || location.pathname === '/auto-selection';
 
   const useCountDown = (initialSeconds) => {
     const [seconds, setSeconds] = useState(initialSeconds);
@@ -14,7 +16,12 @@ export default function PopupWithMessage({ setIsOpenPopup, children }) {
     const runTimer = () => {
       if (seconds === 0) {
         setIsOpenPopup(false);
-        navigate('/');
+        if (location.pathname === '/auto-selection' || location.pathname === '/manual-selection') {
+          navigate('/battle');
+        }
+        else if (location.pathname === '/battle') {
+          navigate('/');
+        }
         return;
       }
       setTimeout(
@@ -40,8 +47,10 @@ export default function PopupWithMessage({ setIsOpenPopup, children }) {
     <>
     <div onClick={onClose} className={styles.popup__overlay}></div>
       <div className={styles.popup}>
+        <h2>{text}</h2>
         <h2 className={styles.popup__title}>{seconds}</h2>
-        <button onClick={onClose} className={styles.popup__close}>Изменить выбор</button>
+        {locationSelect && <button
+        onClick={onClose} className={styles.popup__close}>Изменить выбор</button>}
       {children}
     </div>
     </>
