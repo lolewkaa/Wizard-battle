@@ -1,64 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import styles from './AutoSelect.module.css';
 import Card from '../Card/Card.jsx';
+import PopupWithMessage from '../PopupWithMessage/PopupWithMessage.jsx';
 
-const wizzards = [
-  {
-    name: 'Harry',
-    lastName: 'Potter',
-    healthPoints: 100,
-    manaPoints: 100,
-    status: 'active',
-  },
-
-  {
-    name: 'Sirius',
-    lastName: 'Snake',
-    healthPoints: 100,
-    manaPoints: 1000,
-    status: 'active',
-  },
-
-  {
-    name: 'Hermiona',
-    lastName: 'Granger',
-    healthPoints: 100,
-    manaPoints: 1000,
-    status: 'active',
-  },
-
-  {
-    name: 'fff',
-    lastName: 'Granger',
-    healthPoints: 100,
-    manaPoints: 1000,
-    status: 'active',
-  },
-
-  {
-    name: 'qqqqqq',
-    lastName: 'Granger',
-    healthPoints: 100,
-    manaPoints: 1000,
-    status: 'active',
-  },
-  {
-    name: 'zzzzzz',
-    lastName: 'Granger',
-    healthPoints: 100,
-    manaPoints: 1000,
-    status: 'active',
-  },
-
-  {
-    name: 'hello',
-    lastName: 'Granger',
-    healthPoints: 100,
-    manaPoints: 1000,
-    status: 'active',
-  },
-
-];
+const baseUrl = 'https://wizard-world-api.herokuapp.com/Wizards';
 
 function getRandomWizzard(arr) {
   const randomNum = Math.random() * arr.length;
@@ -66,14 +12,21 @@ function getRandomWizzard(arr) {
   return arr[randomIndex];
 }
 
-export default function AutoSelect({ setIsOpenPopup }) {
+export default function AutoSelect({  isOpenPopup, setIsOpenPopup }) {
   const [isDisableButton, setIsDisableButton] = useState(false);
-  const [wizzardsData, setWizzardsData] = useState(wizzards);
-  const [firstOpponent, setFirstOpponent] = useState(JSON.parse(localStorage.getItem('firstOpponent')) || null);
-  const [secondOpponent, setSecondOpponent] = useState(JSON.parse(localStorage.getItem('secondOpponent')) || null);
+  // const [wizzardsData, setWizzardsData] = useState(wizzards);
+  const [wizzardsData, setWizzardsData] = useState([]);
+  const [firstOpponent, setFirstOpponent] = useState(JSON.parse(localStorage.getItem('firstOpponentId')) || null);
+  const [secondOpponent, setSecondOpponent] = useState(JSON.parse(localStorage.getItem('secondOpponentId')) || null);
 
   useEffect(() => {
-    if (localStorage.getItem('firstOpponent') === null && localStorage.getItem('secondOpponent') === null) {
+    axios.get(baseUrl).then((res) => {
+      setWizzardsData(res.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (localStorage.getItem('firstOpponentId') === null && localStorage.getItem('secondOpponentId') === null) {
       setFirstOpponent(getRandomWizzard(wizzardsData));
       setSecondOpponent(getRandomWizzard(wizzardsData));
     }
@@ -89,19 +42,18 @@ export default function AutoSelect({ setIsOpenPopup }) {
   };
 
   useEffect(() => {
-    localStorage.setItem('firstOpponent', JSON.stringify(firstOpponent));
+    localStorage.setItem('firstOpponentId', JSON.stringify(firstOpponent));
   }, [firstOpponent]);
 
   useEffect(() => {
-    localStorage.setItem('secondOpponent', JSON.stringify(secondOpponent));
+    localStorage.setItem('secondOpponentId', JSON.stringify(secondOpponent));
   }, [secondOpponent]);
-
   function openPopup() {
     setIsOpenPopup(true);
   }
   return (
     <div className={styles.auto}>
-        <Card name={firstOpponent?.name}/>
+        <Card name={firstOpponent?.firstName} lastName={firstOpponent?.lastName}/>
       <div className={styles.auto__container}>
         <button
         className={styles.auto__button}
@@ -116,7 +68,8 @@ export default function AutoSelect({ setIsOpenPopup }) {
         onClick={openPopup}
         >К бою!</button>
       </div>
-      <Card name={secondOpponent?.name} />
+      <Card name={secondOpponent?.firstName} lastName={secondOpponent?.lastName}/>
+      {isOpenPopup && <PopupWithMessage setIsOpenPopup={setIsOpenPopup} text='Перенапрявляем вас на страницу сражения'></PopupWithMessage>}
     </div>
   );
 }

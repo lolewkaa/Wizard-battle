@@ -1,67 +1,49 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import styles from './IndependentSelect.module.css';
 import Card from '../Card/Card.jsx';
+import PopupWithMessage from '../PopupWithMessage/PopupWithMessage.jsx';
 
-const wizzards = [
-  {
-    id: '0',
-    name: 'Harry',
-    lastName: 'Potter',
-    healthPoints: 100,
-    manaPoints: 100,
-    status: 'active',
-  },
+const baseUrl = 'https://wizard-world-api.herokuapp.com/Wizards';
 
-  {
-    id: '1',
-    name: 'Sirius',
-    lastName: 'Snake',
-    healthPoints: 100,
-    manaPoints: 1000,
-    status: 'active',
-  },
-
-  {
-    id: '2',
-    name: 'Hermiona',
-    lastName: 'Granger',
-    healthPoints: 100,
-    manaPoints: 1000,
-    status: 'active',
-  },
-];
-
-export default function IndependentSelect({ setIsOpenPopup }) {
+export default function IndependentSelect({ setIsOpenPopup, isOpenPopup }) {
   const [isDisableButton, setIsDisableButton] = useState(false);
   const [firstOpponentId, setFirstOpponentId] = useState(JSON.parse(localStorage.getItem('firstOpponentId')) || '');
   const [secondOpponentId, setSecondOpponentId] = useState(JSON.parse(localStorage.getItem('secondOpponentId')) || '');
+  const [wizzardsData, setWizzardsData] = useState([]);
 
+  useEffect(() => {
+    axios.get(baseUrl).then((res) => {
+      setWizzardsData(res.data);
+    });
+  }, []);
   function openPopup() {
     setIsOpenPopup(true);
   }
-  const toggleSelectionOpponent = (wizardId, opponent) => {
+
+  const toggleSelectionOpponent = (id, opponent) => {
     if (opponent === 'firstOpponentId') {
-      if (firstOpponentId === wizardId) {
+      if (firstOpponentId === id) {
         setFirstOpponentId('');
       } else {
-        setFirstOpponentId(wizardId);
+        setFirstOpponentId(id);
       }
     }
     if (opponent === 'secondOpponentId') {
-      if (secondOpponentId === wizardId) {
+      if (secondOpponentId === id) {
         setSecondOpponentId('');
       } else {
-        setSecondOpponentId(wizardId);
+        setSecondOpponentId(id);
       }
     }
   };
 
   useEffect(() => {
-    localStorage.setItem('firstOpponent', JSON.stringify(firstOpponentId));
+    localStorage.setItem('firstOpponentId', JSON.stringify(firstOpponentId));
   }, [firstOpponentId]);
 
   useEffect(() => {
-    localStorage.setItem('secondOpponent', JSON.stringify(secondOpponentId));
+    localStorage.setItem('secondOpponentId', JSON.stringify(secondOpponentId));
   }, [secondOpponentId]);
 
   useEffect(() => {
@@ -71,12 +53,13 @@ export default function IndependentSelect({ setIsOpenPopup }) {
           <>
             <section className={styles.manual}>
               <div className={styles.manual__container}>
-              {wizzards.map((wizzard) => (
+              {wizzardsData.map((wizzard) => (
                   <Card
                     colorPlace={wizzard.id === firstOpponentId}
                     toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'firstOpponentId')}
-                    key={wizzard.name}
-                    name={wizzard.name}
+                    key={wizzard.id}
+                    name={wizzard.firstName}
+                    lastName={wizzard.lastName}
                   />))}
               </div>
               <button
@@ -85,15 +68,17 @@ export default function IndependentSelect({ setIsOpenPopup }) {
               className={styles.manual__button
               }>В бой</button>
               <div className={styles.manual__container}>
-              {wizzards.map((wizzard) => (
+              {wizzardsData.map((wizzard) => (
                   <Card
                     colorPlace={wizzard.id === secondOpponentId}
                     toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'secondOpponentId')}
-                    key={wizzard.name}
-                    name={wizzard.name}
+                    key={wizzard.id}
+                    name={wizzard.firstName}
+                    lastName={wizzard.lastName}
                   />))}
               </div>
             </section>
+            {isOpenPopup && <PopupWithMessage setIsOpenPopup={setIsOpenPopup} text='Перенапрявляем вас на страницу сражения'></PopupWithMessage>}
           </>
   );
 }
