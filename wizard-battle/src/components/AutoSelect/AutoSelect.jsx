@@ -12,7 +12,7 @@ function getRandomWizzard(arr) {
   return arr[randomIndex];
 }
 
-export default function AutoSelect({  isOpenPopup, setIsOpenPopup }) {
+export default function AutoSelect({ isOpenPopup, setIsOpenPopup }) {
   const [isDisableButton, setIsDisableButton] = useState(false);
   // const [wizzardsData, setWizzardsData] = useState(wizzards);
   const [wizzardsData, setWizzardsData] = useState([]);
@@ -34,7 +34,12 @@ export default function AutoSelect({  isOpenPopup, setIsOpenPopup }) {
 
   const handleFindFighters = () => {
     setIsDisableButton(true);
+    const animation = setInterval(() => {
+      setFirstOpponent(getRandomWizzard(wizzardsData));
+      setSecondOpponent(getRandomWizzard(wizzardsData));
+    }, 200);
     setTimeout(() => {
+      clearInterval(animation);
       setFirstOpponent(getRandomWizzard(wizzardsData));
       setSecondOpponent(getRandomWizzard(wizzardsData));
       setIsDisableButton(false);

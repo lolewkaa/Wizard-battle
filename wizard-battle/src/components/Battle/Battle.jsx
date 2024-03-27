@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSpring, animated } from 'react-spring';
 import axios from 'axios';
 import styles from './Battle.module.css';
 import Card from '../Card/Card.jsx';
@@ -13,17 +14,21 @@ export default function Battle({ isOpenPopup, setIsOpenPopup }) {
     id: JSON.parse(localStorage.getItem('firstOpponentId')),
     firstName: '',
     lastName: '',
-    healthPoints: 50,
-    manaPoints: 50,
+    healthPoints: 200,
+    manaPoints: 200,
   });
 
   const [secondOpponent, setSecondOpponent] = useState({
     id: JSON.parse(localStorage.getItem('secondOpponentId')),
     firstName: '',
     lastName: '',
-    healthPoints: 50,
-    manaPoints: 50,
+    healthPoints: 200,
+    manaPoints: 200,
   });
+  const [propsFirstAnimationHealth, setFirstAnimationHealth] = useSpring(() => ({ width: 200 }));
+  const [propsSecondAnimationHealth, setSecondAnimationHealth] = useSpring(() => ({ width: 200 }));
+  const [propsFirstAnimationMana, setFirstAnimationMana] = useSpring(() => ({ width: 200 }));
+  const [propsSecondAnimationMana, setSecondAnimationMana] = useSpring(() => ({ width: 200 }));
   const [spells, setSpells] = useState([]);
   const [isOpponentMove, setisOpponentMove] = useState('');
   const [firstOpponentSpellsDisabled, setFirstOpponentSpellsDisabled] = useState(true);
@@ -33,12 +38,11 @@ export default function Battle({ isOpenPopup, setIsOpenPopup }) {
   function changeOpponentMove() {
     const opponent = Math.floor(Math.random() * 2);
     if (opponent === 0) {
-      console.log('ходит первый')
+      console.log('ходит первый');
       setisOpponentMove('first');
       setFirstOpponentSpellsDisabled(false);
-    }
-    else {
-      console.log('ходит второй')
+    } else {
+      console.log('ходит второй');
       setisOpponentMove('second');
       setSecondOpponentSpellsDisabled(false);
     }
@@ -57,12 +61,11 @@ export default function Battle({ isOpenPopup, setIsOpenPopup }) {
         if (spell.type === 'Curse') {
           spell.damage = getRandomInt(10, 20);
           spell.mana = getRandomInt(6, 20);
-        }
-        else {
+        } else {
           spell.damage = getRandomInt(10, 30);
           spell.mana = getRandomInt(6, 30);
         }
-      })
+      });
       setSpells(filterSpells);
     });
     axios.get(wizzardsUrl).then((res) => {
@@ -71,40 +74,44 @@ export default function Battle({ isOpenPopup, setIsOpenPopup }) {
         id: wizzardFirst.id,
         firstName: wizzardFirst.firstName,
         lastName: wizzardFirst.lastName,
-        healthPoints: 50,
-        manaPoints: 50,
+        healthPoints: 200,
+        manaPoints: 200,
       });
       const wizzardSecond = res.data.find((elem) => elem.id === secondOpponent.id);
       setSecondOpponent({
         id: wizzardSecond.id,
         firstName: wizzardSecond.firstName,
         lastName: wizzardSecond.lastName,
-        healthPoints: 50,
-        manaPoints: 50,
+        healthPoints: 200,
+        manaPoints: 200,
       });
     });
     changeOpponentMove();
   }, []);
 
   function getFirstOpponentSpell(spell) {
-    const health = firstOpponent.healthPoints;
+    const health = secondOpponent.healthPoints;
     const spellDamage = spell.damage;
     const mana = firstOpponent.manaPoints;
     const usedMana = spell.mana;
-    firstOpponent.healthPoints = health - spellDamage;
+    secondOpponent.healthPoints = health - spellDamage;
     firstOpponent.manaPoints = mana - usedMana;
+    setSecondAnimationHealth({ width: secondOpponent.healthPoints });
+    setFirstAnimationMana({ width: firstOpponent.manaPoints });
     setisOpponentMove('second');
     setSecondOpponentSpellsDisabled(false);
     setFirstOpponentSpellsDisabled(true);
   }
 
   function getSecondOpponentSpell(spell) {
-    const health = secondOpponent.healthPoints;
+    const health = firstOpponent.healthPoints;
     const spellDamage = spell.damage;
     const mana = secondOpponent.manaPoints;
     const usedMana = spell.mana;
-    secondOpponent.healthPoints = health - spellDamage;
+    firstOpponent.healthPoints = health - spellDamage;
     secondOpponent.manaPoints = mana - usedMana;
+    setFirstAnimationHealth({ width: firstOpponent.healthPoints });
+    setSecondAnimationMana({ width: secondOpponent.manaPoints });
     setisOpponentMove('first');
     setFirstOpponentSpellsDisabled(false);
     setSecondOpponentSpellsDisabled(true);
@@ -117,22 +124,19 @@ export default function Battle({ isOpenPopup, setIsOpenPopup }) {
       }
       setIsOpenPopup(true);
       winnerName = `${secondOpponent.firstName} ${secondOpponent.lastName}`;
-    }
-    else if (firstOpponent.manaPoints < 0) {
+    } else if (firstOpponent.manaPoints < 0) {
       if (secondOpponent.firstName === null) {
         secondOpponent.firstName = '';
       }
       setIsOpenPopup(true);
       winnerName = `${secondOpponent.firstName} ${secondOpponent.lastName}`;
-    }
-    else if (secondOpponent.healthPoints < 0) {
+    } else if (secondOpponent.healthPoints < 0) {
       if (firstOpponent.firstName === null) {
         firstOpponent.firstName = '';
       }
       setIsOpenPopup(true);
       winnerName = `${firstOpponent.firstName} ${firstOpponent.lastName}`;
-    }
-    else if (secondOpponent.manaPoints < 0) {
+    } else if (secondOpponent.manaPoints < 0) {
       if (firstOpponent.firstName === null) {
         firstOpponent.firstName = '';
       }
@@ -152,6 +156,14 @@ export default function Battle({ isOpenPopup, setIsOpenPopup }) {
               name={firstOpponent.firstName}
               lastName={firstOpponent.lastName}
             />
+            <h2 className={styles.battle__text}>Здоровье</h2>
+            <animated.div className={styles.battle__healthLine} style={propsFirstAnimationHealth}>
+              {firstOpponent.healthPoints}
+            </animated.div>
+            <h2 className={styles.battle__text}>Мана</h2>
+            <animated.div className={styles.battle__manaLine} style={propsFirstAnimationMana}>
+              {firstOpponent.manaPoints}
+              </animated.div>
             { spells.map((spell) => {
               if (spells.indexOf(spell) < 20) {
                 return (<Spell
@@ -173,6 +185,14 @@ export default function Battle({ isOpenPopup, setIsOpenPopup }) {
             healthPoints={secondOpponent.healthPoints}
             manaPoints={secondOpponent.manaPoints}
             />
+            <h2 className={styles.battle__text}>Здоровье</h2>
+            <animated.div className={styles.battle__healthLine} style={propsSecondAnimationHealth}>
+              {secondOpponent.healthPoints}
+            </animated.div>
+            <h2 className={styles.battle__text}>Мана</h2>
+            <animated.div className={styles.battle__manaLine} style={propsSecondAnimationMana}>
+              {secondOpponent.manaPoints}
+            </animated.div>
             { spells.map((spell) => {
               if (spells.indexOf(spell) > 20 && spells.indexOf(spell) <= 40) {
                 return (<Spell

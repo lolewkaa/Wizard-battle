@@ -14,3 +14,22 @@
   grid-auto-flow: column dense;
   gap: 10px;
 }
+
+.battle__healthLine {
+  height: 30px;
+  background-color: green;
+  text-align: left;
+  padding-left: 5px;
+}
+
+.battle__manaLine {
+  height: 30px;
+  background-color: red;
+  text-align: left;
+  padding-left: 5px;
+}
+
+.battle__text {
+  margin: 0;
+  padding: 0;
+}
