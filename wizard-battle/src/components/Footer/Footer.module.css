@@ -1,5 +1,6 @@
 .footer {
     width: 100%;
-    background-color: pink;
-    height: 50px;
+    background-color: black;
+    border-top: 1px solid rgba(255, 240, 156, 1);
+    height: 60px;
 }

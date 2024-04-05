@@ -52,33 +52,35 @@ export default function IndependentSelect({ setIsOpenPopup, isOpenPopup }) {
   return (
           <>
             <section className={styles.manual}>
-              <div className={styles.manual__container}>
-              {wizzardsData.map((wizzard) => (
-                  <Card
-                    colorPlace={wizzard.id === firstOpponentId}
-                    toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'firstOpponentId')}
-                    key={wizzard.id}
-                    name={wizzard.firstName}
-                    lastName={wizzard.lastName}
-                  />))}
-              </div>
-              <button
-              onClick={openPopup}
-              disabled={isDisableButton}
-              className={styles.manual__button
-              }>В бой</button>
-              <div className={styles.manual__container}>
-              {wizzardsData.map((wizzard) => (
-                  <Card
-                    colorPlace={wizzard.id === secondOpponentId}
-                    toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'secondOpponentId')}
-                    key={wizzard.id}
-                    name={wizzard.firstName}
-                    lastName={wizzard.lastName}
-                  />))}
+              <div className={styles.manual__box}>
+                <div className={styles.manual__container}>
+                {wizzardsData.map((wizzard) => (
+                    <Card
+                      colorPlace={wizzard.id === firstOpponentId}
+                      toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'firstOpponentId')}
+                      key={wizzard.id}
+                      name={wizzard.firstName}
+                      lastName={wizzard.lastName}
+                    />))}
+                </div>
+                <button
+                onClick={openPopup}
+                disabled={isDisableButton}
+                className={styles.manual__button
+                }>В бой</button>
+                <div className={styles.manual__container}>
+                {wizzardsData.map((wizzard) => (
+                    <Card
+                      colorPlace={wizzard.id === secondOpponentId}
+                      toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'secondOpponentId')}
+                      key={wizzard.id}
+                      name={wizzard.firstName}
+                      lastName={wizzard.lastName}
+                    />))}
+                </div>
               </div>
             </section>
-            {isOpenPopup && <PopupWithMessage setIsOpenPopup={setIsOpenPopup} text='Перенапрявляем вас на страницу сражения'></PopupWithMessage>}
+            {isOpenPopup && <PopupWithMessage setIsOpenPopup={setIsOpenPopup} text='Redirect to the battle page'></PopupWithMessage>}
           </>
   );
 }

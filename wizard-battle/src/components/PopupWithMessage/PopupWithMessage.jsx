@@ -39,7 +39,7 @@ export default function PopupWithMessage({ setIsOpenPopup, children, text }) {
     return { seconds };
   };
 
-  const { seconds } = useCountDown(4);
+  const { seconds } = useCountDown(5);
   function onClose() {
     setIsOpenPopup(false);
   }
@@ -47,10 +47,10 @@ export default function PopupWithMessage({ setIsOpenPopup, children, text }) {
     <>
     <div onClick={onClose} className={styles.popup__overlay}></div>
       <div className={styles.popup}>
-        <h2>{text}</h2>
+        <h2 className={styles.popup__text}>{text}</h2>
         <h2 className={styles.popup__title}>{seconds}</h2>
         {locationSelect && <button
-        onClick={onClose} className={styles.popup__close}>Изменить выбор</button>}
+        onClick={onClose} className={styles.popup__close}>Change selection</button>}
       {children}
     </div>
     </>
