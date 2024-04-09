@@ -10,9 +10,11 @@ import Footer from "../Footer/Footer.jsx";
 import AutoSelect from "../AutoSelect/AutoSelect.jsx";
 import IndependentSelect from "../IndependentSelect/IndependentSelect.jsx";
 import styles from "./App.module.css";
+import PopupWithWarning from "../PopupWithWarning/PopupWithWarning.jsx";
 
 function App() {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
+  const [isOpenPopupWarning, setIsOpenPopupWarning] = useState(false);
   const [isAutoSelect, setIsAutoSelect] = useState(false);
   const [isBlockButtonFind, setIsBlockButtonFind] = useState(false);
   const [isBattleStarted, setIsBattleStarted] = useState(
@@ -21,9 +23,7 @@ function App() {
   const location = useLocation();
   useEffect(() => {
     if (location.pathname !== "/battle" && isBattleStarted === true) {
-      localStorage.removeItem("secondOpponentId");
-      localStorage.removeItem("firstOpponentId");
-      localStorage.removeItem("isBattleStarted");
+      setIsOpenPopupWarning(true);
     }
   }, []);
 
@@ -38,6 +38,7 @@ function App() {
               <SelectionButtons
                 setIsOpenPopup={setIsOpenPopup}
                 setIsAutoSelect={setIsAutoSelect}
+                isAutoSelect={isAutoSelect}
               />
             }
           />
@@ -48,6 +49,7 @@ function App() {
                 isOpenPopup={isOpenPopup}
                 setIsOpenPopup={setIsOpenPopup}
                 setIsBlockButtonFind={setIsBlockButtonFind}
+                isBlockButtonFind={isBlockButtonFind}
               />
             }
           />
@@ -73,6 +75,11 @@ function App() {
           <Route path="/feedback" element={<Feedback />} />
         </Routes>
         <Footer />
+        {isOpenPopupWarning && (
+        <PopupWithWarning
+          setIsOpenPopupWarning={setIsOpenPopupWarning}
+        ></PopupWithWarning>
+        )}
       </div>
     </>
   );

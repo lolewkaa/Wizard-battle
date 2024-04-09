@@ -37,7 +37,7 @@
 }
 
 .header__container {
-  max-width: 260px;
+  max-width: 350px;
   display: flex;
   align-items: center;
 }

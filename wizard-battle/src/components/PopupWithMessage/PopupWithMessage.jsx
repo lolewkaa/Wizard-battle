@@ -18,8 +18,7 @@ export default function PopupWithMessage({ setIsOpenPopup, children, text }) {
         setIsOpenPopup(false);
         if (location.pathname === '/auto-selection' || location.pathname === '/manual-selection') {
           navigate('/battle');
-        }
-        else if (location.pathname === '/battle') {
+        } else if (location.pathname === '/battle') {
           navigate('/');
         }
         return;

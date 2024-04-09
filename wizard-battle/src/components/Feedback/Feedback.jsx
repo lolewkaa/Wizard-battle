@@ -11,7 +11,7 @@ export default function Feedback() {
 
   // звездный рейтинг
   const [currentItem, setCurrentItem] = useState();
-  const [hoverItem, setHoverItem] = useState();
+  const [, setHoverItem] = useState();
   const stars = Array(5).fill(0);
   const lowRating = currentItem < 3;
 
@@ -34,10 +34,9 @@ export default function Feedback() {
           values.email = '';
           values.name = '';
           values.comment = '';
-          localStorage.removeItem('secondOpponent')
-          localStorage.removeItem('firstOpponent')
-          localStorage.removeItem('secondOpponentId')
-          localStorage.removeItem('firstOpponentId')
+          localStorage.removeItem("secondOpponentId");
+          localStorage.removeItem("firstOpponentId");
+          localStorage.removeItem("isBattleStarted");
         }}
         validationSchema={validationsSchema}
         >
@@ -58,9 +57,6 @@ export default function Feedback() {
                 name={'name'}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                /**
-                *не понимаю как в values передается name
-                */
                 value={values.name}
               />
               {touched.name && errors.name && <p className={styles.feedBack__err}>{errors.name}</p>}

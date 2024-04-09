@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import styles from "./AutoSelect.module.css";
 import Card from "../Card/Card.jsx";
 import PopupWithMessage from "../PopupWithMessage/PopupWithMessage.jsx";
+import { getWizzards } from '../../services/wizzards';
+import { getRandomWizzard } from '../utils/utils';
 
-const baseUrl = "https://wizard-world-api.herokuapp.com/Wizards";
-
-function getRandomWizzard(arr) {
-  const randomNum = Math.random() * arr.length;
-  const randomIndex = Math.floor(randomNum);
-  return arr[randomIndex];
-}
+const classNames = require('classnames');
 
 export default function AutoSelect({ isOpenPopup, setIsOpenPopup }) {
   const [isDisableButton, setIsDisableButton] = useState(false);
@@ -29,15 +24,8 @@ export default function AutoSelect({ isOpenPopup, setIsOpenPopup }) {
     if (localStorage.getItem('secondOpponentId') !== undefined) {
       setFirstOpponent(JSON.parse(localStorage.getItem('secondOpponentId')));
     }
-
-    axios.get(baseUrl).then((res) => {
-      setWizzardsData(res.data);
-    });
-    // if (localStorage.getItem('firstOpponentId')
-    //= == null && localStorage.getItem('secondOpponentId') === null) {
-    //   setFirstOpponent(getRandomWizzard(wizzardsData));
-    //   setSecondOpponent(getRandomWizzard(wizzardsData));
-    // }
+    getWizzards()
+      .then((res) => setWizzardsData(res));
   }, []);
 
   const handleFindFighters = () => {
@@ -72,18 +60,18 @@ export default function AutoSelect({ isOpenPopup, setIsOpenPopup }) {
       />
       <div className={styles.auto__container}>
         <button
-          className={styles.auto__button}
+          className={classNames(styles.auto__button, { [styles.disable]: isDisableButton })}
           onClick={handleFindFighters}
           disabled={isDisableButton}
         >
-          Найти
+          Find opponents
         </button>
         <button
-          className={styles.auto__button}
+          className={classNames(styles.auto__button, { [styles.disable]: isDisableButton })}
           disabled={isDisableButton}
           onClick={openPopup}
         >
-          К бою!
+          Action!
         </button>
       </div>
       <Card

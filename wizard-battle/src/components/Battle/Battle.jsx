@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSpring, animated } from 'react-spring';
-import axios from 'axios';
 import styles from './Battle.module.css';
 import Card from '../Card/Card.jsx';
 import Spell from '../Spell/Spell.jsx';
 import PopupWithMessage from '../PopupWithMessage/PopupWithMessage.jsx';
-import getRandomInt from '../utils/utils';
-
-const spellsUrl = 'https://wizard-world-api.herokuapp.com/Spells';
-const wizzardsUrl = 'https://wizard-world-api.herokuapp.com/Wizards';
+import getSpells from '../../services/spells';
+import { getWizzardById } from '../../services/wizzards';
 
 export default function Battle({
   setIsBattleStarted,
@@ -65,50 +62,12 @@ export default function Battle({
   }
 
   useEffect(() => {
-    axios.get(spellsUrl).then((res) => {
-      const filterSpells = res.data.filter(
-        (spell) => spell.type === 'Jinx' || spell.type === 'Curse',
-      );
-      filterSpells.map((spell) => {
-        if (spell.type === 'Curse') {
-          spell.damage = getRandomInt(8, 20);
-          spell.mana = getRandomInt(6, 18);
-        } else {
-          spell.damage = getRandomInt(7, 27);
-          spell.mana = getRandomInt(5, 25);
-        }
-        if (spell.type === 'Curse') {
-          spell.manaDiapason = '6-18';
-          spell.damageDiapason = '8-20';
-        } else {
-          spell.manaDiapason = '5-25';
-          spell.damageDiapason = '7-27';
-        }
-      });
-      setSpells(filterSpells);
-    });
-    axios.get(wizzardsUrl).then((res) => {
-      const wizzardFirst = res.data.find(
-        (elem) => elem.id === firstOpponent.id,
-      );
-      setFirstOpponent({
-        id: wizzardFirst.id,
-        firstName: wizzardFirst.firstName,
-        lastName: wizzardFirst.lastName,
-        healthPoints: 200,
-        manaPoints: 200,
-      });
-      const wizzardSecond = res.data.find(
-        (elem) => elem.id === secondOpponent.id,
-      );
-      setSecondOpponent({
-        id: wizzardSecond.id,
-        firstName: wizzardSecond.firstName,
-        lastName: wizzardSecond.lastName,
-        healthPoints: 200,
-        manaPoints: 200,
-      });
-    });
+    getSpells()
+      .then((res) => setSpells(res));
+    getWizzardById(firstOpponent.id)
+      .then((res) => setFirstOpponent(res));
+    getWizzardById(secondOpponent.id)
+      .then((res) => setSecondOpponent(res));
     changeOpponentMove();
     if (location.pathname === '/battle') {
       setIsBattleStarted(
@@ -117,7 +76,6 @@ export default function Battle({
     }
   }, []);
 
-  // const [currentHealthWidth, setCurrentHealthWidth] = useState(250)
   function getFirstOpponentSpell(spell) {
     const health = secondOpponent.healthPoints;
     const spellDamage = spell.damage;
@@ -136,12 +94,6 @@ export default function Battle({
     if (firstOpponent.manaPoints < 0) {
       firstOpponent.manaPoints = 0;
     }
-    //   const width = 250;
-    //   const maxHealth = 200;
-    // let updatedHealth = health - spellDamage;
-    // let healthProcent = updatedHealth * 100 / maxHealth
-    // let current = width * (healthProcent / 100)
-    // setCurrentHealthWidth(current)
   }
 
   function getSecondOpponentSpell(spell) {
@@ -204,10 +156,6 @@ export default function Battle({
             name={firstOpponent.firstName}
             lastName={firstOpponent.lastName}
           />
-          {/* <h2 className={styles.battle__text}>Здоровье</h2>
-            <div className={styles.battle__healthLine} >{firstOpponent.healthPoints}</div>
-            <h2 className={styles.battle__text}>Мана</h2>
-            <div className={styles.battle__manaLine}>{firstOpponent.manaPoints}</div> */}
           <animated.div
             className={styles.battle__healthLine}
             style={propsFirstAnimationHealth}
@@ -246,11 +194,6 @@ export default function Battle({
             healthPoints={secondOpponent.healthPoints}
             manaPoints={secondOpponent.manaPoints}
           />
-          {/* <h2 className={styles.battle__text}>Здоровье</h2>
-            <div className={styles.battle__healthLine}
-            style={{ width: `${currentHealthWidth}px`}}>{secondOpponent.healthPoints}</div>
-            <h2 className={styles.battle__text}>Мана</h2>
-            <div className={styles.battle__manaLine}>{secondOpponent.manaPoints}</div> */}
           <animated.div
             className={styles.battle__healthLine}
             style={propsSecondAnimationHealth}

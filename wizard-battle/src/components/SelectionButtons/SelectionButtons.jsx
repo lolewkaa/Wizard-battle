@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './SelectionButtons.module.css';
 import Button from '../Button/Button.jsx';
-import backgroundWood from '../../images/Background.jpg'
-import stars from '../../images/stars.png'
+import backgroundWood from '../../images/Background.jpg';
+import stars from '../../images/stars.png';
 
 export default function SelectionButtons({ setIsAutoSelect }) {
   const navigate = useNavigate();
