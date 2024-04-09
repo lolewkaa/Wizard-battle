@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import styles from './IndependentSelect.module.css';
 import Card from '../Card/Card.jsx';
 import PopupWithMessage from '../PopupWithMessage/PopupWithMessage.jsx';
+import { getWizzards } from '../../services/wizzards';
 
-const baseUrl = 'https://wizard-world-api.herokuapp.com/Wizards';
+const classNames = require('classnames');
 
 export default function IndependentSelect({ setIsOpenPopup, isOpenPopup }) {
   const [isDisableButton, setIsDisableButton] = useState(false);
@@ -13,9 +13,8 @@ export default function IndependentSelect({ setIsOpenPopup, isOpenPopup }) {
   const [wizzardsData, setWizzardsData] = useState([]);
 
   useEffect(() => {
-    axios.get(baseUrl).then((res) => {
-      setWizzardsData(res.data);
-    });
+    getWizzards()
+      .then((res) => setWizzardsData(res));
   }, []);
   function openPopup() {
     setIsOpenPopup(true);
@@ -52,33 +51,35 @@ export default function IndependentSelect({ setIsOpenPopup, isOpenPopup }) {
   return (
           <>
             <section className={styles.manual}>
-              <div className={styles.manual__container}>
-              {wizzardsData.map((wizzard) => (
-                  <Card
-                    colorPlace={wizzard.id === firstOpponentId}
-                    toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'firstOpponentId')}
-                    key={wizzard.id}
-                    name={wizzard.firstName}
-                    lastName={wizzard.lastName}
-                  />))}
-              </div>
-              <button
-              onClick={openPopup}
-              disabled={isDisableButton}
-              className={styles.manual__button
-              }>В бой</button>
-              <div className={styles.manual__container}>
-              {wizzardsData.map((wizzard) => (
-                  <Card
-                    colorPlace={wizzard.id === secondOpponentId}
-                    toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'secondOpponentId')}
-                    key={wizzard.id}
-                    name={wizzard.firstName}
-                    lastName={wizzard.lastName}
-                  />))}
+              <div className={styles.manual__box}>
+                <div className={styles.manual__container}>
+                {wizzardsData.map((wizzard) => (
+                    <Card
+                      colorPlace={wizzard.id === firstOpponentId}
+                      toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'firstOpponentId')}
+                      key={wizzard.id}
+                      name={wizzard.firstName}
+                      lastName={wizzard.lastName}
+                    />))}
+                </div>
+                <button
+                onClick={openPopup}
+                disabled={isDisableButton}
+                className={classNames(styles.manual__button, { [styles.disable]: isDisableButton })}
+                >В бой</button>
+                <div className={styles.manual__container}>
+                {wizzardsData.map((wizzard) => (
+                    <Card
+                      colorPlace={wizzard.id === secondOpponentId}
+                      toggleSelectionOpponent = {() => toggleSelectionOpponent(wizzard.id, 'secondOpponentId')}
+                      key={wizzard.id}
+                      name={wizzard.firstName}
+                      lastName={wizzard.lastName}
+                    />))}
+                </div>
               </div>
             </section>
-            {isOpenPopup && <PopupWithMessage setIsOpenPopup={setIsOpenPopup} text='Перенапрявляем вас на страницу сражения'></PopupWithMessage>}
+            {isOpenPopup && <PopupWithMessage setIsOpenPopup={setIsOpenPopup} text='Redirect to the battle page'></PopupWithMessage>}
           </>
   );
 }

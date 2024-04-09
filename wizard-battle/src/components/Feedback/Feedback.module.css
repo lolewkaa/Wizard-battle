@@ -8,6 +8,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    border: 1px solid rgba(255, 241, 163, 1);
+    border-radius: 15px;
+    background-color: white;
 }
 
 .feedBack__err {
@@ -29,7 +32,10 @@
 }
 
 .feedBack__text {
-  margin: 0;
+  font-size: 35px;
+  color: rgba(255, 241, 163, 1);
+  margin: 15px 0 0 0;
   padding: 0;
-  font-size: 20px;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-weight: normal;
 }

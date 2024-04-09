@@ -31,5 +31,9 @@ module.exports = {
   rules: {
     'linebreak-style': 'off',
     'react/prop-types': 'off',
+    quotes: "off",
+    'array-callback-return': 'off',
+    'no-param-reassign': 'off',
+    'consistent-return': 'off',
   },
 };
