@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './Spell.module.css';
 
 export default function Spell({
   damageDiapason,
@@ -7,16 +6,17 @@ export default function Spell({
   spellName,
   disableButton,
   clickButton,
+  spellClassName,
 }) {
   return (
     <><button
       onClick={clickButton}
       disabled={disableButton}
-      className={styles.spell}
+      className={spellClassName}
     >
-      {spellName}
+      {spellName}<br/>
       Урон:
-      {damageDiapason}
+      {damageDiapason}<br/>
       Мана: {manaDiapason}
     </button>
     </>

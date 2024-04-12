@@ -53,7 +53,8 @@ export default function AutoSelect({ isOpenPopup, setIsOpenPopup }) {
     setIsOpenPopup(true);
   }
   return (
-    <div className={styles.auto}>
+    <section className={styles.auto}>
+      <div className={styles.auto__box}>
       <Card
         name={firstOpponent?.firstName}
         lastName={firstOpponent?.lastName}
@@ -84,6 +85,7 @@ export default function AutoSelect({ isOpenPopup, setIsOpenPopup }) {
           text="Redirect to the battle page"
         ></PopupWithMessage>
       )}
-    </div>
+      </div>
+    </section>
   );
 }

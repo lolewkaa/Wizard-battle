@@ -11,9 +11,14 @@ export default function Header() {
     || location.pathname === "/auto-selection"
     || location.pathname === "/battle";
   const step3 = location.pathname === "/battle";
+  const mainPageLocation = location.pathname !== '/';
 
   function openForm() {
     navigate("/feedback");
+  }
+
+  function goHome() {
+    navigate("/");
   }
   return (
     <>
@@ -47,6 +52,13 @@ export default function Header() {
               buttonStyle={styles.header__feedBack}
               text="Feedback"
               clickButton={openForm}
+            />
+          )}
+          {mainPageLocation && (
+            <Button
+              buttonStyle={styles.header__feedBack}
+              text="Home"
+              clickButton={goHome}
             />
           )}
         </div>

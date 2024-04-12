@@ -20,6 +20,9 @@ export default function PopupWithMessage({ setIsOpenPopup, children, text }) {
           navigate('/battle');
         } else if (location.pathname === '/battle') {
           navigate('/');
+          localStorage.removeItem("secondOpponentId");
+          localStorage.removeItem("firstOpponentId");
+          localStorage.removeItem("isBattleStarted");
         }
         return;
       }

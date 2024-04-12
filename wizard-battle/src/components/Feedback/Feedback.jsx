@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import styles from './Feedback.module.css';
-import inactiveStar from '../../images/star-point_icon-icons.com_68483.svg';
-import activeStart from '../../images/star_77949.svg';
+import inactiveStar from '../../images/heart_3hgfdgqrwsv4.svg';
+import activeStart from '../../images/heart_3hgfdgqrwsv4 (1).svg';
+
+const classNames = require("classnames");
 
 export default function Feedback() {
-  
   const [agreeCheckboxChecked, setAgreeCheckboxChecked] = useState(false);
   const [connectionCheckboxChecked, setConnectionCheckboxChecked] = useState(false);
 
@@ -24,6 +25,7 @@ export default function Feedback() {
   });
   return (
     <section className={styles.feedBack}>
+      <div className={styles.feedBack__box}>
         <Formik
         initialValues={{
           name: '',
@@ -52,18 +54,19 @@ export default function Feedback() {
             dirty,
           }) => (
             <div className={styles.feedBack__container}>
-              <label htmlFor={'name'}>Имя</label>
+              <label className={styles.feedBack__text} htmlFor={'name'}>Name</label>
               <input
                 type={'text'}
                 name={'name'}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.name}
+                className={styles.feedBack__input}
               />
               {touched.name && errors.name && <p className={styles.feedBack__err}>{errors.name}</p>}
-              <label htmlFor={'email'}>E-mail</label>
+              <label className={styles.feedBack__text} htmlFor={'email'}>E-mail</label>
               <input
-                className={'input'}
+                className={styles.feedBack__input}
                 type={'email'}
                 name={'email'}
                 onChange={handleChange}
@@ -77,6 +80,7 @@ export default function Feedback() {
               }
               {
                 <div className={styles.feedBack__stars}>
+                  <div className={styles.feedBack__starsBox}>
                 {
                   stars.map((item, index) => (
                       <img onClick={() => setCurrentItem(index)}
@@ -88,9 +92,10 @@ export default function Feedback() {
                        />
                   ))
                 }
-                <label htmlFor={'comment'}>Комментарий</label>
+                </div>
+                <label className={styles.feedBack__text} htmlFor={'comment'}>Comment</label>
               <input
-                className={'input'}
+                className={styles.feedBack__comment}
                 type={'comment'}
                 name={'comment'}
                 onChange={handleChange}
@@ -98,35 +103,39 @@ export default function Feedback() {
                 value={values.comment}
               />
           <div className={styles.feedBack__checkBoxContainer}>
-            <input type="checkbox" checked={agreeCheckboxChecked} onChange={() => setAgreeCheckboxChecked(!agreeCheckboxChecked)}/>
+            <input className={styles.feedBack__checkBoxInput} type="checkbox" checked={agreeCheckboxChecked} onChange={() => setAgreeCheckboxChecked(!agreeCheckboxChecked)}/>
             <h2 className={styles.feedBack__text}>
-              Подтверждаю согласие на обработку персональных данных
+            Consent to personal data processing
             </h2>
           </div>
           {lowRating && <>
-          <h2 className={styles.feedBack__text}>Нам жаль, что игра вам не понравилась.
-            Мы хотели бы стать лучше. Если у вас возникла проблема при игре или у вас есть идеи,
-            как сделать ее лучше, опишите все в комментариях.
-            Если вы хотите, чтобы мы связали с вами, отметьте это в поле “Свяжитесь со мной”</h2>
+          <h2 className={styles.feedBack__subtitle}>We are sorry that you did not like the game.
+            We would like to be better. If you have a problem while playing or have any ideas,
+            how to make it better, describe everything in the comments.
+            If you would like us to contact you, please check the “Contact me” box.</h2>
             <div className={styles.feedBack__checkBoxContainer}>
-              <input type="checkbox" checked={connectionCheckboxChecked} onChange={() => setConnectionCheckboxChecked(!connectionCheckboxChecked)} />
+              <input className={styles.feedBack__checkBoxInput} type="checkbox" checked={connectionCheckboxChecked} onChange={() => setConnectionCheckboxChecked(!connectionCheckboxChecked)} />
               <h2 className={styles.feedBack__text}>
-                Свяжитесь со мной
+              Contact me
               </h2>
             </div></>
              }
                 </div>
               }
               <button
+              className={classNames(styles.feedBack__button, {
+                [styles.disable]: !isValid,
+              })}
               disabled={!isValid && !dirty}
               onClick={handleSubmit}
               type={'submit'}
               >
-                Отправить
+                Send
               </button>
             </div>
           )}
         </Formik>
+        </div>
     </section>
   );
 }

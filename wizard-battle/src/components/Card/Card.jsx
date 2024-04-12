@@ -25,7 +25,7 @@ export default function Card({
                 onClick={toggleSelectionOpponent}
                 className={styles.card__btn}
                 style={{ opacity: colorPlace ? '1' : '0.5' }}
-                >Выбрать</button>}
+                >Choose</button>}
                </div>
               </div>
 

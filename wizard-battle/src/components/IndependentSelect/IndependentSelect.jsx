@@ -66,7 +66,7 @@ export default function IndependentSelect({ setIsOpenPopup, isOpenPopup }) {
                 onClick={openPopup}
                 disabled={isDisableButton}
                 className={classNames(styles.manual__button, { [styles.disable]: isDisableButton })}
-                >В бой</button>
+                >Action!</button>
                 <div className={styles.manual__container}>
                 {wizzardsData.map((wizzard) => (
                     <Card
