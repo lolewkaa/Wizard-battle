@@ -20,6 +20,7 @@ export default function SelectionButtons({ setIsAutoSelect }) {
   return (
       <>
       <section className={styles.selection}>
+        <div className={styles.selection__mainContainer}>
         <h1 className={styles.section__title}>Get closer to the magic</h1>
         <img src={backgroundWood} alt='Dark sky with moon' className={styles.selection__image}/>
         <img src={stars} alt='Stars' className={styles.selection__imageStars}/>
@@ -29,6 +30,7 @@ export default function SelectionButtons({ setIsAutoSelect }) {
             <Button buttonStyle={styles.selection__button} clickButton={manualSelection} text='Manual'/>
             <Button buttonStyle={styles.selection__button} clickButton={autoSelection} text='Automatically'/>
           </div>
+        </div>
         </div>
       </section>
       </>

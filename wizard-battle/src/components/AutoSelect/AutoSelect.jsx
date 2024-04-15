@@ -24,6 +24,7 @@ export default function AutoSelect({ isOpenPopup, setIsOpenPopup }) {
     if (localStorage.getItem('secondOpponentId') !== undefined) {
       setFirstOpponent(JSON.parse(localStorage.getItem('secondOpponentId')));
     }
+    localStorage.setItem('opponentsFrom', JSON.stringify('autoSelect'));
     getWizzards()
       .then((res) => setWizzardsData(res));
   }, []);
@@ -79,13 +80,13 @@ export default function AutoSelect({ isOpenPopup, setIsOpenPopup }) {
         name={secondOpponent?.firstName}
         lastName={secondOpponent?.lastName}
       />
+      </div>
       {isOpenPopup && (
         <PopupWithMessage
           setIsOpenPopup={setIsOpenPopup}
           text="Redirect to the battle page"
         ></PopupWithMessage>
       )}
-      </div>
     </section>
   );
 }

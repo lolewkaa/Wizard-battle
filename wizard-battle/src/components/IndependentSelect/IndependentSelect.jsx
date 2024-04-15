@@ -13,6 +13,7 @@ export default function IndependentSelect({ setIsOpenPopup, isOpenPopup }) {
   const [wizzardsData, setWizzardsData] = useState([]);
 
   useEffect(() => {
+    localStorage.setItem('opponentsFrom', JSON.stringify('manualSelect'));
     getWizzards()
       .then((res) => setWizzardsData(res));
   }, []);

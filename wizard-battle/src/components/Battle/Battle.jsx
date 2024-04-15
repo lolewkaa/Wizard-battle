@@ -16,7 +16,7 @@ export default function Battle({
   setIsOpenPopup,
 }) {
   const [firstOpponent, setFirstOpponent] = useState({
-    id: JSON.parse(localStorage.getItem("firstOpponentId")),
+    id: JSON.parse(localStorage.getItem("firstOpponentId")).id,
     firstName: "",
     lastName: "",
     healthPoints: 200,
@@ -24,7 +24,7 @@ export default function Battle({
   });
 
   const [secondOpponent, setSecondOpponent] = useState({
-    id: JSON.parse(localStorage.getItem("secondOpponentId")),
+    id: JSON.parse(localStorage.getItem("secondOpponentId")).id,
     firstName: "",
     lastName: "",
     healthPoints: 200,

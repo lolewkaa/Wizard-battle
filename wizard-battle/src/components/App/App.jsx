@@ -25,7 +25,7 @@ function App() {
     if (location.pathname !== "/battle" && isBattleStarted === true) {
       setIsOpenPopupWarning(true);
     }
-  }, []);
+  }, [location.pathname !== '/battle']);
 
   return (
     <>
